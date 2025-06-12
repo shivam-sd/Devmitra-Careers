@@ -15,7 +15,7 @@ export default function LoginPage (){
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/private/admin/login",
+        `${import.meta.env.VITE_BASE_URL}/private/admin/login`,
         { email, password }
       );
       // Handle successful login (e.g., save token, redirect)

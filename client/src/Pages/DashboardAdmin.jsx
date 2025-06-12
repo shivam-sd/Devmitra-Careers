@@ -29,7 +29,7 @@ export default function DashboardAdmin() {
   const fetchAllJobs = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/private/jobs");
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/private/jobs`);
       setJobs(res.data);
       setError("");
     } catch (err) {
@@ -47,11 +47,11 @@ export default function DashboardAdmin() {
       let res;
       if (searchType === "name") {
         res = await axios.get(
-          `http://localhost:5000/private/jobs/search/byname?title=${encodeURIComponent(searchTerm)}`
+          `${import.meta.env.VITE_BASE_URL}/private/jobs/search/byname?title=${encodeURIComponent(searchTerm)}`
         );
       } else if (searchType === "id") {
         res = await axios.get(
-          `http://localhost:5000/private/jobs/${searchTerm}`
+          `${import.meta.env.VITE_BASE_URL}/private/jobs/${searchTerm}`
         );
         // The ID route returns a single job, so wrap it in an array
         res.data = res.data ? [res.data] : [];

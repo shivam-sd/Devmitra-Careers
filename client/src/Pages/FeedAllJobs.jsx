@@ -1,32 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   FaMapMarkerAlt,
   FaBriefcase,
   FaClock,
   FaCalendarAlt,
 } from "react-icons/fa";
-
-const jobData = [
-  {
-    title: "Senior React Developer",
-    category: "Development",
-    type: "Full-time",
-    location: "Remote",
-    experience: "3+ years",
-    posted: "10/06/2025",
-  },
-  {
-    title: "UI/UX Designer",
-    category: "Design",
-    type: "Full-time",
-    location: "Remote",
-    experience: "2+ years",
-    posted: "10/06/2025",
-  },
-  // Add more as needed...
-];
+import ApplyForm from "./ApplyForm"; 
 
 const FeedAllJobs = () => {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [selectedJob, setSelectedJob] = useState(null); // <-- Add state for selected job
+
+  useEffect(() => {
+    fetchAllJobs();
+    // eslint-disable-next-line
+  }, []);
+  
+  const fetchAllJobs = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/private/jobs`);
+      setJobs(res.data);
+      setError("");
+    } catch (err) {
+      setError("Failed to fetch jobs");
+      setJobs([]);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -47,7 +52,7 @@ const FeedAllJobs = () => {
 
       {/* Job Cards */}
       <div className="mt-10 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 px-4 md:px-20">
-        {jobData.map((job, index) => (
+        {jobs.filter((job) => job.status === "Open").map((job, index) => (
           <div
             key={index}
             className="border rounded-md p-5 shadow-sm hover:shadow-md transition"
@@ -62,18 +67,26 @@ const FeedAllJobs = () => {
                 <FaMapMarkerAlt className="text-gray-500" /> {job.location}
               </li>
               <li className="flex items-center gap-2">
-                <FaClock className="text-gray-500" /> {job.experience} experience
+                <FaClock className="text-gray-500" /> {job.experienceRequired || job.experience} experience
               </li>
               <li className="flex items-center gap-2">
-                <FaCalendarAlt className="text-gray-500" /> Posted on {job.posted}
+                <FaCalendarAlt className="text-gray-500" /> Posted on {job.createdAt ? job.createdAt.slice(0,10) : job.posted}
               </li>
             </ul>
-            <button className="bg-yellow-400 text-black hover:bg-yellow-500 w-full px-4 py-2 rounded-md font-medium cursor-pointer">
+            <button
+              className="bg-yellow-400 text-black hover:bg-yellow-500 w-full px-4 py-2 rounded-md font-medium cursor-pointer"
+              onClick={() => setSelectedJob(job)} // <-- Open ApplyForm for this job
+            >
               Apply Now
             </button>
           </div>
         ))}
       </div>
+
+      {/* Show ApplyForm popup if a job is selected */}
+      {selectedJob && (
+        <ApplyForm job={selectedJob} onClose={() => setSelectedJob(null)} />
+      )}
 
       {/* Footer Note */}
       <div className="mt-16 text-center text-sm text-gray-500 pb-10 px-4">

@@ -52,7 +52,7 @@ export default function PostJobs() {
 
       // Send POST request
       await axios.post(
-        "http://localhost:5000/private/jobs/",
+        `${import.meta.env.VITE_BASE_URL}/private/jobs/`,
         data,
         {
           headers: {
@@ -70,6 +70,7 @@ export default function PostJobs() {
         salaryRange: '',
         description: ''
       });
+      navigate("/"); // Redirect to jobs page after posting
     } catch (err) {
       setError(
         err.response?.data?.msg || "❌ Failed to post job."

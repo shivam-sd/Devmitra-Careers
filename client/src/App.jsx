@@ -4,6 +4,7 @@ import LoginPage from './Pages/LoginPage'
 import DashboardAdmin from './Pages/DashboardAdmin'
 import FeedAllJobs from './Pages/FeedAllJobs'
 import PostJobs from './Pages/PostJobs'
+import ApplyForm from './Pages/ApplyForm'
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path='/Adminlogin' element={<LoginPage />} />
       <Route path='/DashboardAdmin' element={<DashboardAdmin />} />
       <Route path='/PostJobs' element={<PostJobs />} />
+      <Route path='/apply' element={<ApplyForm />} />
      </Routes>
     </div>
   )
