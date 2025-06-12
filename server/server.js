@@ -25,7 +25,11 @@ ConnectTODB();
 // Routes
 app.use('/private/admin', require('./routes/adminRoutes'));
 app.use('/private/jobs', require('./routes/adminRoutes'));
-app.use('/applications', require('./routes/applicationRoutes'));
+app.use('/applications', require('./routes/applicationRoutes'));]
+
+app.get("/" , (req,res) => {
+  res.send("Welcome to the Job Portal Of Devmitra ");
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
