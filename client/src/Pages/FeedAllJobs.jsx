@@ -6,6 +6,7 @@ import {
   FaClock,
   FaCalendarAlt,
 } from "react-icons/fa";
+import Loader from "../assets/Loader.gif";
 import ApplyForm from "./ApplyForm"; 
 
 const FeedAllJobs = () => {
@@ -51,7 +52,18 @@ const FeedAllJobs = () => {
       </div>
 
       {/* Job Cards */}
-      <div className="mt-10 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 px-4 md:px-20">
+      {
+        loading ? (
+          <>
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400">
+                <img src={Loader} alt="Loading..." className="h-full w-full object-cover" />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+          <div className="mt-10 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 px-4 md:px-20">
         {jobs.filter((job) => job.status === "Open").map((job, index) => (
           <div
             key={index}
@@ -82,6 +94,9 @@ const FeedAllJobs = () => {
           </div>
         ))}
       </div>
+          </>
+        )
+      }
 
       {/* Show ApplyForm popup if a job is selected */}
       {selectedJob && (
